@@ -43,7 +43,7 @@
     <div class="container-fluid">
             <h2>{{ course.name }}</h2>
             <div class="card-columns-vertical">
-                {%for lesson in course.lesson_set.all %}
+                {% for lesson in course.lesson_set.all %}
                     <div class="card mt-1">
                         <div class="card-header"><h5>Lesson {{lesson.order|add:1}}: {{lesson.title}}</h5></div>
                         <div class="card-body">{{lesson.content}}</div>
@@ -51,18 +51,18 @@
                 {% endfor %}
             </div>
             <!-- Course detail template changes go here -->
-            {%if user.is_authenticated % }
+            {% if user.is_authenticated %}
                 <button type="button" class="btn btn-success btn-lg" data-toggle="collapse" data-target="#exam">Start Exam</button>
                 <div id="exam" class="collapse">
-                    <form id="exam_form" class="form-group" action="{% url 'onlinecourse:submit' course.id %}" method="POST">
-                        {%for question in course.lesson_set.all% }
+                    <form id="exam_form" class="form-group" method="POST">
+                        {% for question in course.question_set.all %}
                             <div class="card mt-1">
                                 <div class="card-header">
                                     <h5>Question: {{ question.content }} </h5>
                                 </div>
                                 {% csrf_token %}
                                 <div class="group-form">
-                                    {%for choice in question.choice_set.all% }
+                                    {% for choice in question.choice_set.all %}
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="{{ question.id }}" id="{{ choice.id }}" value="{{ choice.id }}">
                                             <label class="form-check-label" for="{{ choice.id }}">{{ choice.content }}</label>
@@ -70,11 +70,11 @@
                                     {%endfor%}
                                 </div>
                             </div>
-                        {%endfor% }
+                        {% endfor %}
                         <button type="submit" class="btn btn-success btn-lock">Submit</button>
                     </form>
                 </div>
-            {%endif% }
+            {% endif %}
     </div>
 </body>
 </html>
