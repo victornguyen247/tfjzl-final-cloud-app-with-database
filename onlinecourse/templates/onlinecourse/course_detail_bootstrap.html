@@ -51,17 +51,30 @@
                 {% endfor %}
             </div>
             <!-- Course detail template changes go here -->
-            {% if user.is_authenticated %}
-                Start Exam
-
-                {% for question in course.question_set.all %}
-                    {{ question.content }}
-                    {% csrf_token %}
-                    {% for choice in question.choice_set.all %}
-                        {{ choice.content }}
-                    {% endfor %}
-                {% endfor %}  
-            {% endif %}
-            </div>
+            { % if user.is_authenticated % }
+                <button type="button" class="btn btn-success btn-lg" data-toggle="collapse" data-target="#exam">Start Exam</button>
+                <div id="exam" class="collapse">
+                    <form id="exam_form" class="form-group" action="{% url 'onlinecourse:submit' course.id %}" method="POST">
+                        { %for question in course.lesson_set.all% }
+                            <div class="card mt-1">
+                                <div class="card-header">
+                                    <h5>Question: {{ question.content }} </h5>
+                                </div>
+                                {% csrf_token %}
+                                <div class="group-form">
+                                    { %for choice in question.choice_set.all% }
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="{{ question.id }}" id="{{ choice.id }}" value="{{ choice.id }}">
+                                            <label class="form-check-label" for="{{ choice.id }}">{{ choice.content }}</label>
+                                        </div>
+                                    {%endfor%}
+                                </div>
+                            </div>
+                        { %endfor% }
+                        <button type="submit" class="btn btn-success btn-lock">Submit</button>
+                    </form>
+                </div>
+            { %endif% }
+    </div>
 </body>
 </html>
