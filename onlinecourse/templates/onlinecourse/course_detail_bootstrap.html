@@ -51,6 +51,21 @@
                 {% endfor %}
             </div>
             <!-- Course detail template changes go here -->
+            { % if user.is_authenticated % }
+                <button type="button" class="btn btn-primary">Start Exam</button>
+                <div class="collapse">
+                    <form class="form-group" action="{% url 'onlinecourse:exam' %}" method="post ">
+                        { %for question in course.lesson_set.all% }
+                            <p>Question: {{ question.content }} </p>
+                            {% csrf_token %}
+                            { %for choice in question.choice_set.all% }
+                                {{choice.content}}
+                            {%endfor%}
+                        { %endfor% }
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            { %endif% }
     </div>
 </body>
 </html>
