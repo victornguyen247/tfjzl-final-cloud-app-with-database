@@ -60,14 +60,19 @@
                                 <div class="card-header">
                                     <h5>Question: {{ question.content }} </h5>
                                 </div>
-                                {% csrf_token %}
-                                <div class="group-form">
+                                <div class="card-body"> 
+                                    {% csrf_token %}
                                     {% for choice in question.choice_set.all %}
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="{{ question.id }}" id="{{ choice.id }}" value="{{ choice.id }}">
-                                            <label class="form-check-label" for="{{ choice.id }}">{{ choice.content }}</label>
+                                            <input class="form-check-input" type="radio" 
+                                                name="choice_{{ question.id }}" 
+                                                id="{{ choice.id }}" 
+                                                value="{{ choice.id }}">
+                                            <label class="form-check-label" for="{{ choice.id }}">
+                                                {{ choice.content }}
+                                            </label>
                                         </div>
-                                    {%endfor%}
+                                    {% endfor %}
                                 </div>
                             </div>
                         {% endfor %}
